@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black font-sans leading-normal tracking-normal">
+
+    <div class="container mx-auto p-6">
+        <!-- Header -->
+        <header class="bg-zinc-900 text-white p-6 rounded-lg shadow-md mb-6">
+            <h1 class="text-3xl font-bold text-center">Organization Management</h1>
+        </header>
+
+        <!-- Add Organization Form -->
+        <div class="max-w-md mx-auto bg-zinc-900 text-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-bold mb-4 text-center">Add Organization</h2>
+            <form action="/organizations" method="POST" class="space-y-4">
+                <div>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Organization Name"
+                        class="w-full px-3 py-2 border rounded-lg bg-black text-white"
+                        required
+                    />
+                </div>
+                <div>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        class="w-full px-3 py-2 border rounded-lg bg-black text-white"
+                        required
+                    />
+                </div>
+                <div>
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="Location"
+                        class="w-full px-3 py-2 border rounded-lg bg-black text-white"
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800"
+                >
+                    Add Organization
+                </button>
+            </form>
+        </div>
+
+        <!-- Display Hierarchy -->
+        <div class="mt-6 bg-zinc-900 text-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4">Organizations</h2>
+            <% hierarchy.forEach(org => { %>
+                <div class="mb-6">
+                    <!-- Organization -->
+                    <div class="flex justify-between items-center bg-blue-100 p-4 rounded-lg shadow-md mb-4">
+                        <h3 class="text-lg font-semibold text-black"><%= org.name %> (<%= org.location %>)</h3>
+                    </div>
+
+                    <div class="flex">
+                        <!-- Left Section: Add Team Form -->
+                        <div class="w-1/2 pr-4">
+                            <form
+                                action="/organizations/<%= org._id %>/teams"
+                                method="POST"
+                                class="space-y-4"
+                            >
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Team Name"
+                                    class="w-full px-3 py-2 border rounded-lg bg-black text-white"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    class="w-full bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
+                                >
+                                    Add Team
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Right Section: Teams & Members -->
+                        <div class="w-1/2 pl-4">
+                            <% org.teams.forEach(team => { %>
+                                <div class="mt-6 bg-gray-100 p-4 rounded-lg shadow-sm mb-4">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="font-bold text-black">Team: <%= team.name %></h4>
+                                    </div>
+
+                                    <!-- Members Table -->
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full table-auto max-w-full bg-white text-black rounded-lg shadow-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th class="px-4 py-2 border-b text-left">Member Name</th>
+                                                    <th class="px-4 py-2 border-b text-left">Unique ID</th>
+                                                    <th class="px-4 py-2 border-b text-left">Status</th>
+                                                    <th class="px-4 py-2 border-b text-left">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% team.members.forEach(member => { %>
+                                                    <tr>
+                                                        <td class="px-4 py-2 border-b"><%= member.name %></td>
+                                                        <td class="px-4 py-2 border-b"><%= member.uniqueId %></td>
+                                                        <td class="px-4 py-2 border-b">
+                                                            <span class="<%= member.status === 'Image Uploaded' ? 'text-green-600' : 'text-red-600' %>">
+                                                                <%= member.status %>
+                                                            </span>
+                                                        </td>
+                                                        <td class="px-4 py-2 border-b flex justify-start gap-4 items-center">
+                                                            <!-- Upload Image -->
+                                                            <form
+                                                                action="/members/<%= member._id %>/upload"
+                                                                method="POST"
+                                                                enctype="multipart/form-data"
+                                                                class="flex items-center gap-2"
+                                                            >
+                                                                <input
+                                                                    type="file"
+                                                                    name="image"
+                                                                    class="px-3 py-2 border rounded-lg bg-black text-white"
+                                                                    required
+                                                                />
+                                                                <button
+                                                                    type="submit"
+                                                                    class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800"
+                                                                >
+                                                                    Upload Image
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Add Member Form -->
+                                    <form
+                                        action="/teams/<%= team._id %>/members"
+                                        method="POST"
+                                        class="mt-4 space-y-4"
+                                    >
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Member Name"
+                                            class="w-full px-3 py-2 border rounded-lg bg-black text-white"
+                                            required
+                                        />
+                                        <input
+                                            type="text"
+                                            name="uniqueId"
+                                            placeholder="Unique ID"
+                                            class="w-full px-3 py-2 border rounded-lg bg-black text-white"
+                                            required
+                                        />
+                                        <button
+                                            type="submit"
+                                            class="w-full bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
+                                        >
+                                            Add Member
+                                        </button>
+                                    </form>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</body>
+</html>
