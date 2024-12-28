@@ -33,7 +33,6 @@ A brief description of your project, including its purpose and functionality. Fo
    Create a `.env` file in the project root and add the following:
    ```plaintext
    MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
-   PORT=3000
    ```
    Replace `<username>`, `<password>`, `<cluster>`, and `<database>` with your MongoDB credentials.
 
