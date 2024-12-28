@@ -54,10 +54,9 @@ project-folder/
 |   |-- teamRoutes.js            # Routes for team management
 |   |-- memberRoutes.js          # Routes for member management
 |-- public/                      # Static files (CSS, images, etc.)
-|-- uploads/                     # Uploaded files (via Multer)
 |-- views/                       # EJS templates
 |-- .env                         # Environment variables
-|-- server.js                    # Main application file
+|-- app.js                    # Main application file
 ```
 
 ---
