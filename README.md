@@ -49,7 +49,11 @@ A brief description of your project, including its purpose and functionality. Fo
 project-folder/
 |-- mongoose-connection/
 |   |-- mongoose-connection.js   # MongoDB connection logic
-|-- routes/
+|-- controllers/
+|   |-- membercontroller.js
+    |-- teamcontroller.js
+    |-- organizationcontroller.js   
+|-- Routes/
 |   |-- organizationRoutes.js    # Routes for organization management
 |   |-- teamRoutes.js            # Routes for team management
 |   |-- memberRoutes.js          # Routes for member management
